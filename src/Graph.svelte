@@ -34,6 +34,7 @@
   let canvas: HTMLCanvasElement;
   let frameId: number;
 
+  $: idle = state === State.Idle;
   $: running = state === State.Running;
   $: paused = state === State.Paused;
   $: complete = state === State.Done;
@@ -159,6 +160,22 @@
     nextStep();
   }
 
+  function next() {
+    state = State.Paused;
+    operations = [];
+
+    const { done } = sorter.next();
+
+    frameId = window.requestAnimationFrame(draw);
+
+    if (done) {
+      comparisions = [];
+      pointers = [];
+      pivots = [];
+      state = State.Done;
+    }
+  }
+
   function pause() {
     clearInterval(intervalId);
     intervalId = undefined;
@@ -174,6 +191,9 @@
         alt={running ? 'Pause' : 'Start'}
         src={`${running ? 'pause' : 'start'}.svg`}
       />
+    </Button>
+    <Button disabled={complete || running} on:click={next}>
+      <img alt="Next" src="next.svg" />
     </Button>
     <Button disabled={!complete && !paused} on:click={reset}>
       <img alt="Reset" src="reset.svg" />
@@ -212,7 +232,7 @@
     align-items: center;
     display: grid;
     gap: 0.5rem;
-    grid-template-columns: 1fr auto auto;
+    grid-template-columns: 1fr auto auto auto;
   }
 
   footer {
