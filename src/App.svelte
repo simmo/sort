@@ -30,7 +30,7 @@
   }
 
   const fastest = 0;
-  const slowest = 500;
+  const slowest = 100;
   let speed = 0;
 </script>
 
@@ -43,7 +43,7 @@
       <input
         min={fastest}
         max={slowest}
-        step="1"
+        step="10"
         type="range"
         bind:value={speed}
       />
