@@ -9,7 +9,7 @@ export default function* selectionSort<T>(
   let min: number;
 
   for (let i = 0; i < size; i++) {
-    yield onPointer();
+    onPointer();
 
     min = i;
 

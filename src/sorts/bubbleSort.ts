@@ -8,7 +8,7 @@ export default function* bubbleSort<T>(
   const size = items.length;
 
   for (let i = 0; i < size; i++) {
-    yield onPointer();
+    onPointer();
 
     const end = size - i - 1;
 

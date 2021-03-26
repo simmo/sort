@@ -8,7 +8,7 @@ export default function* insertionSort<T>(
   yield onSorted(0);
 
   for (let i = 1; i < items.length; i++) {
-    yield onPointer();
+    onPointer();
 
     for (let j = i - 1; j > -1; j--) {
       onPointer(j);

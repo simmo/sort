@@ -34,7 +34,6 @@
   let canvas: HTMLCanvasElement;
   let frameId: number;
 
-  $: idle = state === State.Idle;
   $: running = state === State.Running;
   $: paused = state === State.Paused;
   $: complete = state === State.Done;
