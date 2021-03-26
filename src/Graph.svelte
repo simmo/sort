@@ -237,4 +237,9 @@
   h2 {
     margin: 0;
   }
+
+  img {
+    height: 1rem;
+    width: 1rem;
+  }
 </style>
