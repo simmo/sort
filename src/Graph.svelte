@@ -43,7 +43,7 @@
   function draw() {
     const ctx = canvas.getContext('2d');
     const gap = 1 * dpr;
-    const indicator = 2 * dpr;
+    const indicator = 5 * dpr;
     const barWidth =
       (canvas.width - (sortedItems.length - 1) * gap) / sortedItems.length;
 
