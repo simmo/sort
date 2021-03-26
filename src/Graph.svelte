@@ -179,7 +179,7 @@
       <img alt="Reset" src="reset.svg" />
     </Button>
   </header>
-  <canvas class="canvas" bind:this={canvas} width="300" height="150" />
+  <canvas class="canvas" bind:this={canvas} width="1800" height="900" />
   <footer>
     <ul class="details">
       <li>
