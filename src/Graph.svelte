@@ -244,7 +244,7 @@
   }
 
   section {
-    background-color: #ecf0f1;
+    background-color: var(--light-grey);
     border-radius: 0.3rem;
     display: grid;
     gap: 1rem;

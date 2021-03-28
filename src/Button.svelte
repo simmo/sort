@@ -4,6 +4,7 @@
 
 <style>
   button {
+    appearance: none;
     background-color: #f9f9f9;
     border-radius: 0.3rem;
     border: 1px solid #ddd;
@@ -20,11 +21,12 @@
 
   button:not(:disabled):hover,
   button:not(:disabled):focus {
-    border-color: #bbb;
+    color: var(--light-green);
+    border-color: var(--light-green);
   }
 
   button:disabled {
-    border-color: #eee;
+    border-color: var(--grey);
     filter: grayscale(1);
     opacity: 0.6;
   }

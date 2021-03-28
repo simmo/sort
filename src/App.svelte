@@ -46,10 +46,29 @@
 
 <div class="page">
   <header>
-    <h1>Sorting</h1>
-    <p>Using visualisation to explore different sorting algorithms.</p>
+    <div>
+      <h1 class="heading">Sorting</h1>
+      <p class="subHeading">
+        Using visualisation to explore different sorting algorithms.
+      </p>
+    </div>
     <p>
-      <label for="speed">Speed (Fast to Slow)</label>
+      This project is built with <a href="https://svelte.dev">Svelte</a> and
+      <a href="https://www.typescriptlang.org">TypeScript</a>. The sorting
+      algorithms use nested
+      <a
+        href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator"
+        >generator functions</a
+      >, to asynchronously execute logic, render to
+      <a href="https://developer.mozilla.org/ms/docs/Web/API/Canvas_API"
+        >HTML canvas</a
+      > and resume execution.
+    </p>
+    <p>
+      <label for="speed"
+        >Speed
+        <small>Fast to Slow</small></label
+      >
       <input
         min={fastest}
         max={slowest}
@@ -84,14 +103,19 @@
   }
 
   header {
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--grey);
     display: grid;
-    gap: 1rem;
+    gap: 1.5rem;
     padding-bottom: 1rem;
   }
 
-  header h1 {
+  .heading {
+    font-size: 2.6rem;
     margin: 0;
+  }
+
+  .subHeading {
+    font-size: 1.4rem;
   }
 
   header p {
@@ -105,8 +129,8 @@
   }
 
   footer {
-    border-top: 1px solid #eee;
-    padding-top: 2rem;
+    border-top: 1px solid var(--grey);
+    padding-top: 1rem;
     text-align: center;
   }
 </style>

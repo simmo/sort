@@ -1,3 +1,16 @@
+:root {
+  --green: #27ae60;
+  --light-green: #2ecc71;
+  --black: #222;
+  --dark-grey: #777;
+  --grey: #eee;
+  --light-grey: #ecf0f1;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 html,
 body {
   height: 100%;
@@ -5,10 +18,14 @@ body {
   width: 100%;
 }
 
+html {
+  font-size: 16px;
+}
+
 body {
-  box-sizing: border-box;
-  color: #333;
+  color: var(---black);
   font-family: 'Source Code Pro', monospace;
+  font-size: 100%;
   font-weight: 300;
   line-height: 1.6;
   margin: 0;
@@ -16,54 +33,24 @@ body {
 }
 
 a {
-  color: rgb(0, 100, 200);
-  text-decoration: none;
+  color: var(--green);
+  transition: color 0.3s;
 }
 
 a:hover {
+  color: var(--light-green);
   text-decoration: underline;
 }
 
-a:visited {
-  color: rgb(0, 80, 160);
-}
-
-label {
+label,
+label small {
   display: block;
 }
 
-input,
-button,
-select,
-textarea {
-  font-family: inherit;
-  font-size: inherit;
-  -webkit-padding: 0.4em 0;
-  padding: 0.4em;
-  margin: 0 0 0.5em 0;
-  box-sizing: border-box;
-  border: 1px solid #ccc;
-  border-radius: 2px;
+label {
+  margin-bottom: 0.25rem;
 }
 
-input:disabled {
-  color: #ccc;
-}
-
-button {
-  color: #333;
-  background-color: #f4f4f4;
-  outline: none;
-}
-
-button:disabled {
-  color: #999;
-}
-
-button:not(:disabled):active {
-  background-color: #ddd;
-}
-
-button:focus {
-  border-color: #666;
+label small {
+  color: var(--dark-grey);
 }
