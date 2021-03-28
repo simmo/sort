@@ -59,11 +59,23 @@
       <a
         href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator"
         >generator functions</a
-      >, to asynchronously execute logic, render to
+      >
+      to manage the execution of logic, capture algorithm output and visualise this
+      via
       <a href="https://developer.mozilla.org/ms/docs/Web/API/Canvas_API"
         >HTML canvas</a
-      > and resume execution.
+      >.
     </p>
+    <p>
+      <span class="social"
+        ><img alt="GitHub logo" class="social-image" src="github.svg" /><a
+          href="https://github.com/simmo/sort">View on GitHub</a
+        ></span
+      >
+    </p>
+  </header>
+  <div class="controls">
+    <p>Tip: Try adjusting this while the algorithms are running.</p>
     <p>
       <label for="speed"
         >Speed
@@ -78,7 +90,7 @@
         on:input={trackSpeed}
       />
     </p>
-  </header>
+  </div>
   <main>
     <Graph {speed} name="Bubble" {items} sort={bubbleSort} />
     <Graph {speed} name="Cocktail" {items} sort={cocktailSort} />
@@ -103,10 +115,9 @@
   }
 
   header {
-    border-bottom: 1px solid var(--grey);
     display: grid;
     gap: 1.5rem;
-    padding-bottom: 1rem;
+    max-width: 45rem;
   }
 
   .heading {
@@ -132,5 +143,21 @@
     border-top: 1px solid var(--grey);
     padding-top: 1rem;
     text-align: center;
+  }
+
+  .controls {
+    border-bottom: 1px solid var(--grey);
+    border-top: 1px solid var(--grey);
+  }
+
+  .social {
+    display: inline-grid;
+    gap: 0.25rem;
+    grid-template-columns: auto 1fr;
+  }
+
+  .social-image {
+    height: 1.5rem;
+    width: 1.5rem;
   }
 </style>
