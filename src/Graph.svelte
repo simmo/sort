@@ -186,6 +186,8 @@
   });
 </script>
 
+<svelte:window on:resize={draw} />
+
 <section>
   <header>
     <h2>{name}</h2>
