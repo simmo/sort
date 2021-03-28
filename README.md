@@ -2,7 +2,7 @@
 
 Using visualisation to explore different sorting algorithms.
 
-Built using [Svelte](https://svelte.dev/), [TypeScript](https://www.typescriptlang.org/), [HTML Canvas](https://developer.mozilla.org/ms/docs/Web/API/Canvas_API) and [JavaScript Generators](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator).
+Built using [Svelte](https://svelte.dev), [TypeScript](https://www.typescriptlang.org), [HTML Canvas](https://developer.mozilla.org/ms/docs/Web/API/Canvas_API) and [JavaScript Generators](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator).
 
 ---
 

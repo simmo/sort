@@ -3,6 +3,7 @@
 
   import Button from './Button.svelte';
   import type { Sorter } from './types';
+  import track from './utils/track';
 
   export let items: number[];
   export let name: string;
@@ -185,16 +186,39 @@
 <section>
   <header>
     <h2>{name}</h2>
-    <Button disabled={complete} on:click={running ? pause : start}>
+    <Button
+      disabled={complete}
+      on:click={() => {
+        if (running) {
+          track('click', { category: name, label: 'pause' });
+          pause();
+        } else {
+          track('click', { category: name, label: 'start' });
+          start();
+        }
+      }}
+    >
       <img
         alt={running ? 'Pause' : 'Start'}
         src={`${running ? 'pause' : 'start'}.svg`}
       />
     </Button>
-    <Button disabled={complete || running} on:click={next}>
+    <Button
+      disabled={complete || running}
+      on:click={() => {
+        track('click', { category: name, label: 'next' });
+        next();
+      }}
+    >
       <img alt="Next" src="next.svg" />
     </Button>
-    <Button disabled={!complete && !paused} on:click={reset}>
+    <Button
+      disabled={!complete && !paused}
+      on:click={() => {
+        track('click', { category: name, label: 'reset' });
+        reset();
+      }}
+    >
       <img alt="Reset" src="reset.svg" />
     </Button>
   </header>

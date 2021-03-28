@@ -1,4 +1,5 @@
 import svelte from 'rollup-plugin-svelte';
+import replace from '@rollup/plugin-replace';
 import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
 import livereload from 'rollup-plugin-livereload';
@@ -39,6 +40,12 @@ export default {
 		file: 'public/build/bundle.js'
 	},
 	plugins: [
+		replace({
+			preventAssignment: true,
+			values: {
+				DEV: !production
+			}
+		}),
 		svelte({
 			preprocess: sveltePreprocess({ sourceMap: !production }),
 			compilerOptions: {

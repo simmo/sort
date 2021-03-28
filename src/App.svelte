@@ -6,8 +6,10 @@
   import oddEvenSort from './sorts/oddEvenSort';
   import quickSort from './sorts/quickSort';
   import selectionSort from './sorts/selectionSort';
+  import debounce from './utils/debounce';
 
   import shuffle from './utils/shuffle';
+  import track from './utils/track';
 
   const enum Dataset {
     Random = 'RANDOM',
@@ -32,6 +34,14 @@
   const fastest = 0;
   const slowest = 100;
   let speed = 0;
+
+  const trackSpeed = debounce(() => {
+    track('change', {
+      category: 'app',
+      label: 'speed',
+      value: speed,
+    });
+  }, 100);
 </script>
 
 <div class="page">
@@ -46,6 +56,7 @@
         step="10"
         type="range"
         bind:value={speed}
+        on:input={trackSpeed}
       />
     </p>
   </header>
