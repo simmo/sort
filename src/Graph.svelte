@@ -39,67 +39,77 @@
   $: paused = state === State.Paused;
   $: complete = state === State.Done;
 
-  const dpr = window.devicePixelRatio || 2;
+  const dpr = window.devicePixelRatio || 1;
 
   function draw() {
-    const ctx = canvas.getContext('2d');
-    const gap = 1 * dpr;
-    const indicator = 5 * dpr;
-    const barWidth =
-      (canvas.width - (sortedItems.length - 1) * gap) / sortedItems.length;
+    frameId = window.requestAnimationFrame(() => {
+      const ctx = canvas.getContext('2d');
+      const gap = 1 * dpr;
+      const indicator = 5 * dpr;
+      const barWidth =
+        (canvas.width - (sortedItems.length - 1) * gap) / sortedItems.length;
+      const maxBarHeight = canvas.height - indicator - gap;
+      const minBarHeight = maxBarHeight / sortedItems.length;
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    ctx.fillStyle = '#ddd';
-    ctx.fillRect(0, canvas.height - indicator, canvas.width, indicator);
+      ctx.fillStyle = '#ddd';
+      ctx.fillRect(0, canvas.height - indicator, canvas.width, indicator);
 
-    sortedItems.forEach((item, index) => {
-      const barHeight = canvas.height * (item / sortedItems.length) - indicator;
-      const isPointer = pointers.includes(index);
-      const isPivot = pivots.includes(index);
+      sortedItems.forEach((item, index) => {
+        const barHeight = minBarHeight * item;
+        const isPointer = pointers.includes(index);
+        const isPivot = pivots.includes(index);
 
-      if (isPointer || isPivot) {
-        ctx.fillStyle = isPointer ? '#f39c12' : '#c0392b';
+        if (isPointer || isPivot) {
+          ctx.fillStyle = isPointer ? '#f39c12' : '#c0392b';
+
+          ctx.fillRect(
+            index * barWidth + index * gap,
+            canvas.height - indicator,
+            barWidth,
+            indicator
+          );
+        }
+
+        if (operations.includes(index)) {
+          ctx.fillStyle = '#27ae60';
+        } else if (comparisions.includes(index)) {
+          ctx.fillStyle = '#f1c40f';
+        } else if (sorted.includes(index)) {
+          ctx.fillStyle = '#34495e';
+        } else {
+          ctx.fillStyle = '#bdc3c7';
+        }
 
         ctx.fillRect(
           index * barWidth + index * gap,
-          canvas.height - indicator,
+          canvas.height - barHeight - indicator - gap,
           barWidth,
-          indicator
+          barHeight
         );
-      }
-
-      if (operations.includes(index)) {
-        ctx.fillStyle = '#27ae60';
-      } else if (comparisions.includes(index)) {
-        ctx.fillStyle = '#f1c40f';
-      } else if (sorted.includes(index)) {
-        ctx.fillStyle = '#34495e';
-      } else {
-        ctx.fillStyle = '#bdc3c7';
-      }
-
-      ctx.fillRect(
-        index * barWidth + index * gap,
-        canvas.height - barHeight - indicator - gap,
-        barWidth,
-        barHeight
-      );
+      });
     });
   }
 
-  onMount(() => {
-    const rect = canvas.getBoundingClientRect();
+  function update() {
+    operations = [];
 
-    canvas.width = rect.width * dpr;
-    canvas.height = rect.height * dpr;
+    const { done } = sorter.next();
 
-    frameId = window.requestAnimationFrame(reset);
+    draw();
 
-    return () => {
-      window.cancelAnimationFrame(frameId);
-    };
-  });
+    if (done) {
+      comparisions = [];
+      pointers = [];
+      pivots = [];
+      state = State.Done;
+    }
+
+    if (state === State.Running) {
+      intervalId = setTimeout(update, speed);
+    }
+  }
 
   function reset() {
     state = State.Idle;
@@ -139,77 +149,54 @@
   }
 
   function start() {
-    const nextStep = () => {
-      state = State.Running;
-      operations = [];
+    state = State.Running;
 
-      const { done } = sorter.next();
+    update();
 
-      frameId = window.requestAnimationFrame(draw);
-
-      if (done) {
-        comparisions = [];
-        pointers = [];
-        pivots = [];
-        state = State.Done;
-      } else {
-        intervalId = setTimeout(nextStep, speed);
-      }
-    };
-
-    nextStep();
+    track('click', { category: name, label: 'start' });
   }
 
   function next() {
     state = State.Paused;
-    operations = [];
 
-    const { done } = sorter.next();
+    update();
 
-    frameId = window.requestAnimationFrame(draw);
-
-    if (done) {
-      comparisions = [];
-      pointers = [];
-      pivots = [];
-      state = State.Done;
-    }
+    track('click', { category: name, label: 'next' });
   }
 
   function pause() {
-    clearInterval(intervalId);
-    intervalId = undefined;
     state = State.Paused;
+
+    clearInterval(intervalId);
+
+    track('click', { category: name, label: 'pause' });
   }
+
+  onMount(() => {
+    const rect = canvas.getBoundingClientRect();
+
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+
+    reset();
+
+    return () => {
+      window.cancelAnimationFrame(frameId);
+    };
+  });
 </script>
 
 <section>
   <header>
     <h2>{name}</h2>
-    <Button
-      disabled={complete}
-      on:click={() => {
-        if (running) {
-          track('click', { category: name, label: 'pause' });
-          pause();
-        } else {
-          track('click', { category: name, label: 'start' });
-          start();
-        }
-      }}
-    >
-      <img
-        alt={running ? 'Pause' : 'Start'}
-        src={`${running ? 'pause' : 'start'}.svg`}
-      />
+    <Button disabled={complete} on:click={running ? pause : start}>
+      {#if running}
+        <img alt="Pause" src="pause.svg" />
+      {:else}
+        <img alt="Start" src="start.svg" />
+      {/if}
     </Button>
-    <Button
-      disabled={complete || running}
-      on:click={() => {
-        track('click', { category: name, label: 'next' });
-        next();
-      }}
-    >
+    <Button disabled={complete || running} on:click={next}>
       <img alt="Next" src="next.svg" />
     </Button>
     <Button
